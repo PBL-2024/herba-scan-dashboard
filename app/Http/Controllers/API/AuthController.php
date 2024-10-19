@@ -58,15 +58,6 @@ class AuthController extends BaseController
     }
 
     /**
-     * redirect to google
-     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function googleRedirect(Request $request)
-    {
-        return Socialite::driver("google")->stateless()->redirect();
-    }
-
-    /**
      * Summary of googleCallback
      * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
