@@ -73,13 +73,11 @@ class AuthController extends BaseController
      */
     public function googleCallback(Request $request)
     {
-        $googleUser = Socialite::driver("google")->stateless()->user();
-
         $user = User::updateOrCreate(
-            ['google_id' => $googleUser->id],
+            ['google_id' => $request->id],
             [
-                'name' => $googleUser->name,
-                'email' => $googleUser->email,
+                'name' => $request->displayName,
+                'email' => $request->email,
                 'password' => Str::random(12),
                 'email_verified_at' => now(),
             ]

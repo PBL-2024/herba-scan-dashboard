@@ -11,6 +11,5 @@ Route::prefix('auth')->group(function () {
     Route::controller(AuthController::class)->group(function(){
         //  Google
         Route::get('google/redirect', 'googleRedirect');
-        Route::get('google/callback','googleCallback');
     });
 });
