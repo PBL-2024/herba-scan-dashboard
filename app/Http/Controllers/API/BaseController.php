@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -41,5 +42,16 @@ class BaseController extends Controller
         }
 
         return response()->json($response, $code);
+    }
+
+    /**
+     * Assign a role to a user.
+     * @param \App\Models\User $user
+     * @param string $role
+     * @return void
+     */
+    public function assignUserRole(User $user, string $role): void
+    {
+        $user->assignRole($role);
     }
 }

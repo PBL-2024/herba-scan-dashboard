@@ -51,6 +51,8 @@ class AuthController extends BaseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+        // Berikan role 'user' secara otomatis
+        $this->assignUserRole($user, 'user');
         $success['token'] = $user->createToken('api-token')->plainTextToken;
         $success['name'] = $user->name;
 
@@ -74,12 +76,14 @@ class AuthController extends BaseController
             ]
         );
 
+        $this->assignUserRole($user, 'user');
+
         Auth::login($user);
-        
+
         $user = Auth::user();
         $success['token'] = $user->createToken('api-token')->plainTextToken;
         $success['name'] = $user->name;
-        return $this->sendResponse($success,'User login successfully.');
+        return $this->sendResponse($success, 'User login successfully.');
     }
 
     /**
