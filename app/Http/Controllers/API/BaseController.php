@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
@@ -53,5 +53,34 @@ class BaseController extends Controller
     public function assignUserRole(User $user, string $role): void
     {
         $user->assignRole($role);
+    }
+
+    /**
+     * Check if a user has a role or permission.
+     * @param \App\Models\User $user
+     * @param array $roles
+     * @param array $permissions
+     * @return bool
+     */
+    public function checkPermission(Authenticatable $user, array $roles, array $permissions): bool
+    {
+        $hasRole = false;
+        $hasPermission = false;
+
+        foreach ($roles as $role) {
+            if ($user->hasRole($role)) {
+                $hasRole = true;
+                break;
+            }
+        }
+
+        foreach ($permissions as $permission) {
+            if ($user->hasPermissionTo($permission)) {
+                $hasPermission = true;
+                break;
+            }
+        }
+
+        return $hasRole && $hasPermission;
     }
 }

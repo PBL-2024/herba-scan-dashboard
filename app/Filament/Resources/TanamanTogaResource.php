@@ -6,6 +6,7 @@ use App\Filament\Resources\TanamanTogaResource\Pages;
 use App\Filament\Resources\TanamanTogaResource\RelationManagers;
 use App\Models\TanamanToga;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -30,12 +31,17 @@ class TanamanTogaResource extends Resource
                     ->label('Nama Tanaman')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('manfaat')
-                    ->label('Manfaat')
-                    ->required(),
-                Forms\Components\RichEditor::make('pengolahan')
-                    ->label('Pengolahan')
-                    ->required(),
+
+                Section::make()
+                    ->schema([
+                        Forms\Components\RichEditor::make('manfaat')
+                            ->label('Manfaat')
+                            ->required(),
+
+                        Forms\Components\RichEditor::make('pengolahan')
+                            ->label('Pengolahan')
+                            ->required(),
+                    ])
             ]);
     }
 

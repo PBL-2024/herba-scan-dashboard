@@ -8,6 +8,7 @@ use App\Models\Artikel;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,12 +33,17 @@ class ArtikelResource extends Resource
                     ->label('Judul')
                     ->required()
                     ->maxLength(255),
-                RichEditor::make('konten')
-                    ->label('Konten')
-                    ->required(),
+
                 DatePicker::make('tanggal_publikasi')
                     ->label('Tanggal Publikasi')
                     ->required(),
+                Section::make()
+                    ->schema([
+                        RichEditor::make('konten')
+                            ->label('Konten')
+                            ->fileAttachmentsDirectory('attachments')
+                            ->required(),
+                    ])
             ]);
     }
 
@@ -47,10 +53,6 @@ class ArtikelResource extends Resource
             ->columns([
                 TextColumn::make('judul')
                     ->label('Judul')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('konten')
-                    ->label('Konten')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('tanggal_publikasi')

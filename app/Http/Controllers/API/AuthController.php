@@ -73,6 +73,7 @@ class AuthController extends BaseController
                 'email' => $request->email,
                 'password' => Str::random(12),
                 'email_verified_at' => now(),
+                'image_url' => $request->photoUrl,
             ]
         );
 
