@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class ArticlesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart Article';
+    protected static ?string $heading = 'Chart Artikel';
     protected static ?int $sort = 2;
 
 

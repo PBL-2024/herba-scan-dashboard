@@ -21,6 +21,7 @@ class ArticleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Artikel';
+    protected static ?string $label = 'Artikel ';
 
     public static function form(Form $form): Form
     {
@@ -59,6 +60,9 @@ class ArticleResource extends Resource
                 ImageColumn::make('cover')
                     ->label('Cover')
                     ->size(100),
+                TextColumn::make('total_view')
+                    ->label('Total View')
+                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Dibuat Oleh')
                     ->sortable()

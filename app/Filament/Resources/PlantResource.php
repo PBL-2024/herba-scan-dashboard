@@ -23,10 +23,10 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 class PlantResource extends Resource
 {
     protected static ?string $model = Plant::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationLabel = 'Tanaman Toga';
+    protected static ?string $label = 'Tanaman Toga ';
+    protected static ?string $navigationGroup = 'Tanaman';
 
     public static function form(Form $form): Form
     {

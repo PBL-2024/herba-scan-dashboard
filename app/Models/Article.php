@@ -32,6 +32,6 @@ class Article extends Model
 
     public function komentar()
     {
-        return $this->hasMany(Komentar::class);
+        return $this->hasMany(Comment::class);
     }
 }

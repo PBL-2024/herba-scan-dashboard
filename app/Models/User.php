@@ -52,12 +52,12 @@ class User extends Authenticatable
 
     public function komentar()
     {
-        return $this->hasMany(Komentar::class);
+        return $this->hasMany(Comment::class);
     }
 
     public function artikel()
     {
-        return $this->hasMany(Artikel::class);
+        return $this->hasMany(Article::class);
     }
 
     public function avatar()
@@ -70,5 +70,10 @@ class User extends Authenticatable
             return $this->image_url;
         }
         return null;
+    }
+
+    public function unclassifiedPlant()
+    {
+        return $this->hasMany(UnclassifiedPlant::class);
     }
 }
