@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\TanamanToga;
+use App\Models\Article;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TanamanTogaPolicy
+class ArticlePolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class TanamanTogaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_tanaman::toga');
+        return $user->can('view_any_article');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, TanamanToga $tanamanToga): bool
+    public function view(User $user, Article $article): bool
     {
-        return $user->can('view_tanaman::toga');
+        return $user->can('view_article');
     }
 
     /**
@@ -31,23 +31,23 @@ class TanamanTogaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_tanaman::toga');
+        return $user->can('create_article');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, TanamanToga $tanamanToga): bool
+    public function update(User $user, Article $article): bool
     {
-        return $user->can('update_tanaman::toga');
+        return $user->can('update_article');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, TanamanToga $tanamanToga): bool
+    public function delete(User $user, Article $article): bool
     {
-        return $user->can('delete_tanaman::toga');
+        return $user->can('delete_article');
     }
 
     /**
@@ -55,15 +55,15 @@ class TanamanTogaPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_tanaman::toga');
+        return $user->can('delete_any_article');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, TanamanToga $tanamanToga): bool
+    public function forceDelete(User $user, Article $article): bool
     {
-        return $user->can('force_delete_tanaman::toga');
+        return $user->can('force_delete_article');
     }
 
     /**
@@ -71,15 +71,15 @@ class TanamanTogaPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_tanaman::toga');
+        return $user->can('force_delete_any_article');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, TanamanToga $tanamanToga): bool
+    public function restore(User $user, Article $article): bool
     {
-        return $user->can('restore_tanaman::toga');
+        return $user->can('restore_article');
     }
 
     /**
@@ -87,15 +87,15 @@ class TanamanTogaPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_tanaman::toga');
+        return $user->can('restore_any_article');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, TanamanToga $tanamanToga): bool
+    public function replicate(User $user, Article $article): bool
     {
-        return $user->can('replicate_tanaman::toga');
+        return $user->can('replicate_article');
     }
 
     /**
@@ -103,6 +103,6 @@ class TanamanTogaPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_tanaman::toga');
+        return $user->can('reorder_article');
     }
 }

@@ -49,4 +49,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class);
+    }
+
+    public function artikel()
+    {
+        return $this->hasMany(Artikel::class);
+    }
+
+    public function avatar()
+    {
+        // check if not url return with assets
+        if ($this->image_urk != null) {
+            if (filter_var($this->image_url, FILTER_VALIDATE_URL) === false) {
+                return asset('storage/' . $this->image_url);
+            }
+            return $this->image_url;
+        }
+        return null;
+    }
 }

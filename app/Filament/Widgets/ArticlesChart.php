@@ -2,12 +2,12 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Artikel;
+use App\Models\Article;
 use Filament\Widgets\ChartWidget;
 
-class ArtikelsChart extends ChartWidget
+class ArticlesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart Artikel';
+    protected static ?string $heading = 'Chart Article';
     protected static ?int $sort = 2;
 
 
@@ -15,21 +15,21 @@ class ArtikelsChart extends ChartWidget
     {
         $data = array_fill(0, 12, 0);
 
-        $artikelData = Artikel::query()
+        $ArticleData = Article::query()
             ->selectRaw('COUNT(*) as count, MONTH(tanggal_publikasi) as month')
             ->whereYear('tanggal_publikasi', date('Y'))
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
-        foreach ($artikelData as $artikel) {
-            $data[$artikel->month - 1] = $artikel->count;
+        foreach ($ArticleData as $Article) {
+            $data[$Article->month - 1] = $Article->count;
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Artikel posts created',
+                    'label' => 'Article posts created',
                     'data' => $data,
                 ],
             ],

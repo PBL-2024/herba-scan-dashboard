@@ -2,25 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ArtikelResource\Pages;
-use App\Filament\Resources\ArtikelResource\RelationManagers;
-use App\Models\Artikel;
-use Filament\Forms;
+use App\Filament\Resources\ArticleResource\Pages;
+use App\Models\Article;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
-class ArtikelResource extends Resource
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+class ArticleResource extends Resource
 {
-    protected static ?string $model = Artikel::class;
+    protected static ?string $model = Article::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Artikel';
@@ -37,12 +34,15 @@ class ArtikelResource extends Resource
                 DatePicker::make('tanggal_publikasi')
                     ->label('Tanggal Publikasi')
                     ->required(),
+                FileUpload::make('cover')
+                    ->label('Cover')
+                    ->required()
+                    ->image()
+                    ->directory('artikel/cover')
+                    ->visibility('public'),
                 Section::make()
                     ->schema([
-                        RichEditor::make('konten')
-                            ->label('Konten')
-                            ->fileAttachmentsDirectory('attachments')
-                            ->required(),
+                        TinyEditor::make('isi')->required()->fileAttachmentsDirectory('artikel')
                     ])
             ]);
     }
@@ -51,8 +51,16 @@ class ArtikelResource extends Resource
     {
         return $table
             ->columns([
+                // show image
                 TextColumn::make('judul')
                     ->label('Judul')
+                    ->sortable()
+                    ->searchable(),
+                ImageColumn::make('cover')
+                    ->label('Cover')
+                    ->size(100),
+                TextColumn::make('user.name')
+                    ->label('Dibuat Oleh')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('tanggal_publikasi')
@@ -83,9 +91,9 @@ class ArtikelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListArtikels::route('/'),
-            'create' => Pages\CreateArtikel::route('/create'),
-            'edit' => Pages\EditArtikel::route('/{record}/edit'),
+            'index' => Pages\ListArticles::route('/'),
+            'create' => Pages\CreateArticle::route('/create'),
+            'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
     }
 }

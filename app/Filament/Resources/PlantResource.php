@@ -2,22 +2,27 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TanamanTogaResource\Pages;
-use App\Filament\Resources\TanamanTogaResource\RelationManagers;
-use App\Models\TanamanToga;
+use App\Filament\Resources\PlantResource\Pages;
+use App\Filament\Resources\PlantResource\RelationManagers;
+use App\Models\Plant;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
-class TanamanTogaResource extends Resource
+class PlantResource extends Resource
 {
-    protected static ?string $model = TanamanToga::class;
+    protected static ?string $model = Plant::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -27,19 +32,29 @@ class TanamanTogaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                TextInput::make('nama')
                     ->label('Nama Tanaman')
                     ->required()
                     ->maxLength(255),
-
+                FileUpload::make('cover')
+                    ->label('Cover')
+                    ->required()
+                    ->image()
+                    ->directory('tanaman-toga')
+                    ->visibility('public'),
                 Section::make()
                     ->schema([
-                        Forms\Components\RichEditor::make('manfaat')
-                            ->label('Manfaat')
+                        TinyEditor::make('deskripsi')
+                            ->label('Deksripsi')
+                            ->fileAttachmentsDirectory('tanaman-toga')
                             ->required(),
-
-                        Forms\Components\RichEditor::make('pengolahan')
+                        TinyEditor::make('manfaat')
+                            ->label('Manfaat')
+                            ->fileAttachmentsDirectory('tanaman-toga')
+                            ->required(),
+                        TinyEditor::make('pengolahan')
                             ->label('Pengolahan')
+                            ->fileAttachmentsDirectory('tanaman-toga')
                             ->required(),
                     ])
             ]);
@@ -51,6 +66,13 @@ class TanamanTogaResource extends Resource
             ->columns([
                 TextColumn::make('nama') // Tampilkan nama tanaman di tabel
                     ->label('Nama Tanaman')
+                    ->sortable()
+                    ->searchable(),
+                ImageColumn::make('cover')
+                    ->label('Cover')
+                    ->size(100),
+                TextColumn::make('user.name') // Tampilkan nama tanaman di tabel
+                    ->label('Dibuat Oleh')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at') // Tampilkan nama tanaman di tabel
@@ -81,9 +103,9 @@ class TanamanTogaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTanamanTogas::route('/'),
-            'create' => Pages\CreateTanamanToga::route('/create'),
-            'edit' => Pages\EditTanamanToga::route('/{record}/edit'),
+            'index' => Pages\ListPlants::route('/'),
+            'create' => Pages\CreatePlant::route('/create'),
+            'edit' => Pages\EditPlant::route('/{record}/edit'),
         ];
     }
 }

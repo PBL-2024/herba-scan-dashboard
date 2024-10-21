@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tanaman_togas', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->id();
-            $table->string('nama'); // Nama tanaman
-            $table->text('manfaat'); // Manfaat dalam format teks HTML
-            $table->text('pengolahan'); // Pengolahan dalam format teks HTML
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->morphs('favoritable');
             $table->timestamps();
+
+            // foreign key
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tanaman_togas');
+        Schema::dropIfExists('favorites');
     }
 };

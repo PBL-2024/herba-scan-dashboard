@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Artikel;
+use App\Models\Plant;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ArtikelPolicy
+class PlantPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class ArtikelPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_artikel');
+        return $user->can('view_any_plant');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Artikel $artikel): bool
+    public function view(User $user, Plant $plant): bool
     {
-        return $user->can('view_artikel');
+        return $user->can('view_plant');
     }
 
     /**
@@ -31,23 +31,23 @@ class ArtikelPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_artikel');
+        return $user->can('create_plant');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Artikel $artikel): bool
+    public function update(User $user, Plant $plant): bool
     {
-        return $user->can('update_artikel');
+        return $user->can('update_plant');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Artikel $artikel): bool
+    public function delete(User $user, Plant $plant): bool
     {
-        return $user->can('delete_artikel');
+        return $user->can('delete_plant');
     }
 
     /**
@@ -55,15 +55,15 @@ class ArtikelPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_artikel');
+        return $user->can('delete_any_plant');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Artikel $artikel): bool
+    public function forceDelete(User $user, Plant $plant): bool
     {
-        return $user->can('force_delete_artikel');
+        return $user->can('force_delete_plant');
     }
 
     /**
@@ -71,15 +71,15 @@ class ArtikelPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_artikel');
+        return $user->can('force_delete_any_plant');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Artikel $artikel): bool
+    public function restore(User $user, Plant $plant): bool
     {
-        return $user->can('restore_artikel');
+        return $user->can('restore_plant');
     }
 
     /**
@@ -87,15 +87,15 @@ class ArtikelPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_artikel');
+        return $user->can('restore_any_plant');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Artikel $artikel): bool
+    public function replicate(User $user, Plant $plant): bool
     {
-        return $user->can('replicate_artikel');
+        return $user->can('replicate_plant');
     }
 
     /**
@@ -103,6 +103,6 @@ class ArtikelPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_artikel');
+        return $user->can('reorder_plant');
     }
 }
