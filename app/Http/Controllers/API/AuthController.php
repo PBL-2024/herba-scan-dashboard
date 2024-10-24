@@ -49,6 +49,9 @@ class AuthController extends BaseController
         }
 
         $input = $request->all();
+        if (User::where('email', $input['email'])->exists()) {
+            return $this->sendError('Validation Error.', ['error' => 'Email already exists']);
+        }
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         // Berikan role 'user' secara otomatis
