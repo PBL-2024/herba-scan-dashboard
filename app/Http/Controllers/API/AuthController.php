@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use App\Services\OTPService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use Str;
 use Validator;
 
 class AuthController extends BaseController
 {
+    protected $otpService;
+    public function __construct(OTPService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
     /**
      * Login api
      * @param \Illuminate\Http\Request $request
@@ -100,5 +105,53 @@ class AuthController extends BaseController
         $request->user()->currentAccessToken()->delete();
 
         return $this->sendResponse([], 'User logged out successfully.');
+    }
+
+    /**
+     * sendOTP
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse|mixed
+     */
+    public function sendOTP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+
+        if (!User::where('email', $request->email)->exists()) {
+            return $this->sendError('Validation Error.', ['error' => 'Email tidak terdaftar'], 409);
+        }
+
+        $this->otpService->generateOTP($request->email);
+        return $this->sendResponse([], 'OTP berhasil dikirim, cek email anda.');
+    }
+
+    /**
+     * verifyOTP
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse|mixed
+     */
+    public function verifyOTP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'otp' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+
+        $isValid = $this->otpService->verifyOTP($request->email, $request->otp);
+
+        if ($isValid) {
+            return $this->sendResponse([], 'OTP valid.');
+        } else {
+            return $this->sendError('Validation Error.', ['error' => 'OTP tidak valid'], 409);
+        }
     }
 }

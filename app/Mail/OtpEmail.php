@@ -12,13 +12,13 @@ use Illuminate\Queue\SerializesModels;
 class OtpEmail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $otp;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($otp)
     {
-        //
+        $this->otp = $otp;
     }
 
     /**
@@ -27,7 +27,8 @@ class OtpEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Otp Email',
+            subject: 'Otp HerbaScan',
+            from:'noreply@gmail.com',
         );
     }
 
@@ -36,9 +37,7 @@ class OtpEmail extends Mailable
      */
     public function content(): Content
     {
-        return new Content(
-            view: 'emails.otp',
-        );
+        return new Content(view: 'emails.otp',with: ['otp' => $this->otp]);
     }
 
     /**
