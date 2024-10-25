@@ -76,7 +76,10 @@ class ArticleResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make('view-comments')
+                    ->label('Lihat Komentar'),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -98,6 +101,7 @@ class ArticleResource extends Resource
             'index' => Pages\ListArticles::route('/'),
             'create' => Pages\CreateArticle::route('/create'),
             'edit' => Pages\EditArticle::route('/{record}/edit'),
+            'view' => Pages\ViewComments::route('/{record}/view-comments'),
         ];
     }
 }

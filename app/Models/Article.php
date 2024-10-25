@@ -30,7 +30,7 @@ class Article extends Model
         return $this->morphMany(Favorite::class, 'favoritable');
     }
 
-    public function komentar()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
