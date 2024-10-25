@@ -53,4 +53,12 @@ class OTPService
         // Set OTP expired setelah 10 menit, bisa diubah sesuai kebutuhan
         return Carbon::parse($createdAt)->addMinutes(10)->isPast();
     }
+
+    public function getTokenByEmail($email)
+    {
+        // Ambil token dari email yang sesuai
+        $record = PasswordReset::where('email', $email)->first();
+
+        return $record?->token;
+    }
 }

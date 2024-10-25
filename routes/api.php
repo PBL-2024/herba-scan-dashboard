@@ -18,6 +18,7 @@ Route::prefix('v1')->group(function () {
             Route::post('google/callback', 'googleCallback');
             Route::post('otp/send', 'sendOTP');
             Route::post('otp/verify','verifyOTP');
+            Route::post('change-password','changePassword');
         });
     });
 
