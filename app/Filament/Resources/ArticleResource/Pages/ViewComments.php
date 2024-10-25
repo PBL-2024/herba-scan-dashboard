@@ -41,7 +41,7 @@ class ViewComments extends Page implements HasTable
                 TextColumn::make('user.name')
                     ->label('Nama')
                     ->searchable()
-                    ->url(fn (Comment $record) => route('filament.admin.resources.users.edit', ['record' => $record->user_id])),
+                    ->url(fn (Comment $record) => route('filament.admin.resources.users.view', ['record' => $record->user_id])),
                 TextColumn::make('user.email')
                     ->label('Email')
                     ->searchable(),

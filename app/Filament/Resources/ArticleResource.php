@@ -15,6 +15,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use ViewComments;
 class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
@@ -76,10 +77,17 @@ class ArticleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make('view-comments')
-                    ->label('Lihat Komentar'),
+                Tables\Actions\ViewAction::make('view')
+                    ->label('Lihat'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ButtonAction::make('view-comments')
+                    ->label('Lihat Komentar')
+                    ->icon('heroicon-s-chat-bubble-oval-left-ellipsis')
+                    ->url(
+                        fn(Article $record) => ArticleResource::getUrl('view-comment', isAbsolute: false, parameters: ['record' => $record])
+
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -100,8 +108,9 @@ class ArticleResource extends Resource
         return [
             'index' => Pages\ListArticles::route('/'),
             'create' => Pages\CreateArticle::route('/create'),
+            'view' => Pages\ViewArticle::route('/{record}'),
             'edit' => Pages\EditArticle::route('/{record}/edit'),
-            'view' => Pages\ViewComments::route('/{record}/view-comments'),
+            'view-comment' => Pages\ViewComments::route('/{record}/view-comments'),
         ];
     }
 }
