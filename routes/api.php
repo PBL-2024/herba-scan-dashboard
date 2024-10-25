@@ -13,6 +13,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('auth')->group(function () {
         Route::controller(AuthController::class)->group(function () {
+            Route::post('logout', 'logout')->middleware('auth:sanctum');
             Route::post('login', 'login');
             Route::post('register', 'register');
             Route::post('google/callback', 'googleCallback');
