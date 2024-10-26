@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
+use Storage;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -55,25 +56,32 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function artikel()
+    public function articles()
     {
         return $this->hasMany(Article::class);
     }
 
-    public function avatar()
+    /**
+     * Accessor for the image_url attribute.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute($value)
     {
-        // check if not url return with assets
-        if ($this->image_urk != null) {
-            if (filter_var($this->image_url, FILTER_VALIDATE_URL) === false) {
-                return asset('storage/' . $this->image_url);
-            }
-            return $this->image_url;
+        // Check if the value is a path and not a full URL
+        if ($value && !filter_var($value, FILTER_VALIDATE_URL)) {
+            return Storage::disk('public')->url($value);
         }
-        return null;
+        return $value;
     }
 
     public function unclassifiedPlant()
     {
         return $this->hasMany(UnclassifiedPlant::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 }

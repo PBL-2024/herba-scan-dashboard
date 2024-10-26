@@ -1,16 +1,14 @@
 <?php
 
+use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\TanamanController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('v1')->group(function () {
-    Route::get('user', function (Request $request) {
-        return $request->user();
-    })->middleware(['auth:sanctum']);
-
     Route::prefix('auth')->group(function () {
         Route::controller(AuthController::class)->group(function () {
             Route::post('logout', 'logout')->middleware('auth:sanctum');
@@ -18,11 +16,36 @@ Route::prefix('v1')->group(function () {
             Route::post('register', 'register');
             Route::post('google/callback', 'googleCallback');
             Route::post('otp/send', 'sendOTP');
-            Route::post('otp/verify','verifyOTP');
-            Route::post('change-password','changePassword');
+            Route::post('otp/verify', 'verifyOTP');
+            Route::post('change-password', 'changePassword');
         });
     });
 
-    Route::resource('tanaman-togas', TanamanController::class)->middleware('auth:sanctum');
+    // Authenticated
+    Route::middleware(['auth:sanctum'])->group(function () {
+        // User
+        Route::get('user', [UserController::class, 'user']);
+        Route::put('user', [UserController::class, 'update']);
+        Route::post('user/avatar', [UserController::class, 'update_avatar']);
+        Route::get('user/favorites', [UserController::class, 'favorites']);
+
+        // Tanaman
+        Route::group(['prefix' => 'plant'], function () {
+            Route::post('favorite', [TanamanController::class, 'setFavorite']);
+            Route::post('is-favorite', [TanamanController::class, 'isFavorite']);
+            Route::get('{id}', [TanamanController::class, 'show']);
+        });
+
+        // Article
+        Route::group(['prefix' => 'article'], function () {
+            Route::post('favorite', [ArticleController::class, 'setFavorite']);
+            Route::post('is-favorite', [ArticleController::class, 'isFavorite']);
+            Route::get('{id}', [ArticleController::class, 'show']);
+        });
+    });
+
+    // Public
+    Route::get('plants', [TanamanController::class, 'index']);
+    Route::get('articles', [ArticleController::class, 'index']);
 
 });
