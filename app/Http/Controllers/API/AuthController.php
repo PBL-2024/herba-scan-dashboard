@@ -31,7 +31,7 @@ class AuthController extends BaseController
 
             return $this->sendResponse($success, 'User login successfully.');
         } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
+            return $this->sendError('Unauthorized.', ['error' => 'Unauthorized'], 401);
         }
     }
 
@@ -172,7 +172,7 @@ class AuthController extends BaseController
         $userToken = $this->otpService->getTokenByEmail($request->email);
 
         if ($userToken != $token) {
-            return $this->sendError('Validation Error', 'Token tidak valid',409);
+            return $this->sendError('Validation Error', 'Token tidak valid', 409);
         }
 
         $user = User::where('email', $request->email)->first();

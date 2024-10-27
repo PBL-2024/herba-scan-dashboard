@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\TanamanController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -41,6 +42,13 @@ Route::prefix('v1')->group(function () {
             Route::post('favorite', [ArticleController::class, 'setFavorite']);
             Route::post('is-favorite', [ArticleController::class, 'isFavorite']);
             Route::get('{id}', [ArticleController::class, 'show']);
+
+            // Comment
+            Route::group(['prefix' => 'comment'], function () {
+                Route::post('/', [CommentController::class, 'comment']);
+                Route::get('{article_id}', [CommentController::class, 'getComments']);
+                Route::delete('{article_id}', [CommentController::class, 'deleteComment']);
+            });
         });
     });
 

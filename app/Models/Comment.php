@@ -12,6 +12,15 @@ class Comment extends Model
         'komentar',
     ];
 
+    protected $hidden = [
+        'user_id',
+        'article_id',
+    ];
+
+    protected $appends = [
+        'my_comment',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -19,5 +28,10 @@ class Comment extends Model
     public function article()
     {
         return $this->belongsTo(Article::class);
+    }
+
+    public function getMyCommentAttribute()
+    {
+        return auth()->check() && auth()->id() == $this->user_id;
     }
 }

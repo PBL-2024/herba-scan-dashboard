@@ -16,10 +16,7 @@ class Article extends Model
         'tanggal_publikasi',
     ];
 
-    public function getCoverUrlAttribute()
-    {
-        return asset(path: 'storage/' . $this->cover);
-    }
+    protected $appends = ['cover_url'];
 
     public function user()
     {
@@ -41,12 +38,12 @@ class Article extends Model
      * @param mixed $value
      * @return mixed
      */
-    public function getCoverAttribute($value)
+    public function getCoverUrlAttribute($value)
     {
         // Check if the value is a path and not a full URL
-        if ($value && !filter_var($value, FILTER_VALIDATE_URL)) {
-            return Storage::disk('public')->url($value);
+        if ($this->cover && !filter_var($this->cover, FILTER_VALIDATE_URL)) {
+            return Storage::disk('public')->url($this->cover);
         }
-        return $value;
+        return $this->cover;
     }
 }
