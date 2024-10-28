@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\FaqController;
 use App\Http\Controllers\API\TanamanController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -62,5 +63,6 @@ Route::prefix('v1')->group(function () {
     // Public
     Route::get('plants', [TanamanController::class, 'index']);
     Route::get('articles', [ArticleController::class, 'index']);
+    Route::get('faq', [FaqController::class, 'index']);
 
 });
