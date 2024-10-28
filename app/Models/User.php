@@ -75,7 +75,7 @@ class User extends Authenticatable
         return $value;
     }
 
-    public function unclassifiedPlant()
+    public function unclassifiedPlants()
     {
         return $this->hasMany(UnclassifiedPlant::class);
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 class UnclassifiedPlant extends Model
 {
@@ -10,10 +11,20 @@ class UnclassifiedPlant extends Model
         'user_id',
         'nama',
         'file',
+        'is_verified',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected $appends = [
+        'file_url',
+    ];
+
+    public function getFileUrlAttribute()
+    {
+        return Storage::disk('public')->url($this->file);
     }
 }

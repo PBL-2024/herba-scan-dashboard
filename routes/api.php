@@ -37,6 +37,13 @@ Route::prefix('v1')->group(function () {
             Route::get('{id}', [TanamanController::class, 'show']);
         });
 
+        // Tanaman belum terdaftar
+        Route::get('unclassified-plants', [TanamanController::class, 'myUnclassifiedPlants']);
+        Route::group(['prefix' => 'unclassified-plant'], function () {
+            Route::post('/', [TanamanController::class, 'sendUnclassifiedPlant']);
+            Route::delete('{id}', [TanamanController::class, 'deleteUnclassifiedPlant']);
+        });
+
         // Article
         Route::group(['prefix' => 'article'], function () {
             Route::post('favorite', [ArticleController::class, 'setFavorite']);

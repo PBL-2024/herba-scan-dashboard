@@ -6,10 +6,14 @@ use App\Filament\Resources\UnclassifiedPlantResource\Pages;
 use App\Filament\Resources\UnclassifiedPlantResource\RelationManagers;
 use App\Models\UnclassifiedPlant;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -25,7 +29,22 @@ class UnclassifiedPlantResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nama')
+                    ->label('Nama Tanaman')
+                    ->required(),
+                FileUpload::make('file')
+                    ->label('Gambar')
+                    ->image()
+                    ->directory('unclassified_plants')
+                    ->required(),
+                Select::make('is_verified')
+                    ->label('Terverifikasi')
+                    ->options([
+                        1 => 'Ya',
+                        0 => 'Tidak',
+                    ])
+                    ->required(),
+                
             ]);
     }
 
@@ -33,9 +52,30 @@ class UnclassifiedPlantResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('file')
-                    ->label('Gambar')
-                    ->size(200),
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
+                TextColumn::make('nama')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('user.name')
+                    ->label('Pengguna')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('is_verified')
+                    ->label('Terverifikasi')
+                    ->formatStateUsing(fn ($state) => $state ? 'Ya' : 'Tidak')
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('updated_at')
+                    ->label('Diperbarui Pada')
+                    ->dateTime()
+                    ->sortable(),
+
             ])
             ->filters([
                 //

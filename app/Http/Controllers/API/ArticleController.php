@@ -14,6 +14,9 @@ class ArticleController extends BaseController
         $article = Article::query();
         $filter = request("filter", 'terbaru');
         switch ($filter) {
+            case 'terfavorit':
+                $article->withCount('favorites')->orderBy('favorites_count', 'desc');
+                break;
             case 'populer':
                 $article->orderBy('total_view', 'desc');
                 break;

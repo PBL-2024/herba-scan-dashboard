@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Favorite;
 use App\Models\Plant;
+use App\Models\UnclassifiedPlant;
 use Cache;
 use Illuminate\Http\Request;
+use Storage;
 
 class TanamanController extends BaseController
 {
@@ -19,6 +21,9 @@ class TanamanController extends BaseController
         $tanaman = Plant::query();
         $filter = request("filter", 'terbaru');
         switch ($filter) {
+            case 'terfavorit':
+                $tanaman->withCount('favorites')->orderBy('favorites_count', 'desc');
+                break;
             case 'populer':
                 $tanaman->orderBy('total_view', 'desc');
                 break;
@@ -151,4 +156,90 @@ class TanamanController extends BaseController
         }
     }
 
+
+    /**
+     * Get the authenticated user's favorite plants.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function myUnclassifiedPlants(Request $request)
+    {
+        $user = $request->user();
+        $plants = $user->unclassifiedPlants()->get();
+        if ($plants->isNotEmpty()) {
+            return $this->sendResponse($plants, "Berhasil mengambil data tanaman yang belum terklasifikasi.");
+        }
+        return $this->sendResponse(null, "Anda belum memiliki tanaman yang belum terklasifikasi.");
+    }
+
+    /**
+     * Send an unclassified plant.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function sendUnclassifiedPlant(Request $request)
+    {
+        try {
+            // Validate the request
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'file' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
+            ], [
+                'nama.required' => 'Nama tanaman harus diisi.',
+                'nama.string' => 'Nama tanaman harus berupa teks.',
+                'nama.max' => 'Nama tanaman tidak boleh lebih dari 255 karakter.',
+                'file.required' => 'File harus diunggah.',
+                'file.file' => 'File harus berupa file yang valid.',
+                'file.mimes' => 'File harus berformat jpeg, png, jpg, atau gif.',
+                'file.max' => 'Ukuran file tidak boleh lebih dari 2MB.',
+            ]);
+        } catch (\Throwable $th) {
+            return $this->sendError('Validation Error.', $th->getMessage(), 400);
+        }
+
+        $user = $request->user();
+
+        // Store the uploaded file
+        $path = $request->file('file')->store('unclassified_plants', 'public');
+
+        // Create a new unclassified plant record
+        $unclassifiedPlant = UnclassifiedPlant::create([
+            'user_id' => $user->id,
+            'nama' => $request->input('nama'),
+            'file' => $path,
+        ]);
+
+        return $this->sendResponse($unclassifiedPlant, "Berhasil mengirim tanaman yang belum terklasifikasi.");
+    }
+
+    public function deleteUnclassifiedPlant(Request $request, $id)
+    {
+        try {
+            $user = $request->user();
+
+            // Find the unclassified plant by ID
+            $unclassifiedPlant = UnclassifiedPlant::find($id);
+
+            if($unclassifiedPlant == null){
+                throw new \Exception("Data tanaman yang belum terklasifikasi tidak ditemukan.", 404);
+            }
+
+            // Check if the authenticated user is authorized to delete the unclassified plant
+            if ($unclassifiedPlant->user_id !== $user->id) {
+                return $this->sendError('Unauthorized.', 'Anda tidak berwenang untuk menghapus tanaman ini.', 403);
+            }
+
+            // Delete the associated file from storage
+            if ($unclassifiedPlant->file) {
+                Storage::disk('public')->delete($unclassifiedPlant->file);
+            }
+
+            // Delete the unclassified plant record
+            $unclassifiedPlant->delete();
+
+            return $this->sendResponse(null, "Berhasil menghapus tanaman yang belum terklasifikasi.");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error.', $th->getMessage(), $th->getCode());
+        }
+    }
 }
