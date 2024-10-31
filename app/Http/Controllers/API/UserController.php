@@ -68,7 +68,7 @@ class UserController extends BaseController
                 'avatar.max' => 'Ukuran avatar tidak boleh lebih dari 2MB.',
             ]);
         } catch (\Throwable $th) {
-            return $this->sendError($th->getMessage(), $th->getCode());
+            return $this->sendError($th->getMessage(), 400);
         }
 
         $user = $request->user();
