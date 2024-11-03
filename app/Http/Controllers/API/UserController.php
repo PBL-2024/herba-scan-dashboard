@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Models\Article;
 use App\Models\Plant;
 use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
 use Storage;
+use Validator;
 
 class UserController extends BaseController
 {
@@ -68,7 +70,7 @@ class UserController extends BaseController
                 'avatar.max' => 'Ukuran avatar tidak boleh lebih dari 2MB.',
             ]);
         } catch (\Throwable $th) {
-            return $this->sendError($th->getMessage(), $th->getCode(),400);
+            return $this->sendError($th->getMessage(), $th->getCode(), 400);
         }
 
         $user = $request->user();
@@ -121,5 +123,39 @@ class UserController extends BaseController
         ];
 
         return $this->sendResponse($favorites, 'Berhasil mengambil data favorit.');
+    }
+
+    /**
+     * Change the authenticated user's password.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required',
+        ], [
+            'old_password.required' => 'Password lama harus diisi.',
+            'new_password.required' => 'Password baru harus diisi.',
+            'new_password.min' => 'Password baru harus terdiri dari minimal 8 karakter.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+
+        $user = $request->user();
+
+        // Check if the old password is correct
+        if (!Hash::check($request->input('old_password'), $user->password)) {
+            return $this->sendError('Validation Error.', ['old_password' => 'Password lama tidak sesuai.'], 409);
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        return $this->sendResponse([], 'Password berhasil diubah.');
     }
 }
