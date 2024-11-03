@@ -44,7 +44,7 @@ class UnclassifiedPlantResource extends Resource
                         0 => 'Tidak',
                     ])
                     ->required(),
-                
+
             ]);
     }
 
@@ -65,7 +65,7 @@ class UnclassifiedPlantResource extends Resource
                     ->searchable(),
                 TextColumn::make('is_verified')
                     ->label('Terverifikasi')
-                    ->formatStateUsing(fn ($state) => $state ? 'Ya' : 'Tidak')
+                    ->formatStateUsing(fn($state) => $state ? 'Ya' : 'Tidak')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Dibuat Pada')
@@ -87,7 +87,8 @@ class UnclassifiedPlantResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->poll(10);
     }
 
     public static function getRelations(): array
