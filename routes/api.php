@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
             Route::post('google/callback', 'googleCallback');
             Route::post('otp/send', 'sendOTP');
             Route::post('otp/verify', 'verifyOTP');
+            Route::post('change-password', 'changePassword');
         });
     });
 
@@ -29,7 +30,6 @@ Route::prefix('v1')->group(function () {
         Route::put('user', [UserController::class, 'update']);
         Route::post('user/avatar', [UserController::class, 'update_avatar']);
         Route::get('user/favorites', [UserController::class, 'favorites']);
-        Route::put('user/change-password', [UserController::class, 'changePassword']);
 
         // Tanaman
         Route::group(['prefix' => 'plant'], function () {

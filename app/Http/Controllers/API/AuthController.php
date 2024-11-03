@@ -154,4 +154,35 @@ class AuthController extends BaseController
             return $this->sendError('Validation Error.', ['error' => 'OTP tidak valid'], 409);
         }
     }
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required',
+            'c_password' => 'required|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+
+        $token = $request->input('token');
+        $userToken = $this->otpService->getTokenByEmail($request->email);
+
+        if ($userToken != $token) {
+            return $this->sendError('Validation Error', 'Token tidak valid', 409);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return $this->sendError('Validation Error.', ['error' => 'Email tidak terdaftar'], 409);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return $this->sendResponse([], 'Password berhasil diubah.');
+    }
 }
