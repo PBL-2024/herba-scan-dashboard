@@ -26,13 +26,13 @@ Route::prefix('v1')->group(function () {
     // Authenticated
     Route::middleware(['auth:sanctum'])->group(function () {
         // User
-        Route::group(['prefix'=> 'user'], function () {
+        Route::group(['prefix' => 'user'], function () {
             Route::get('/', [UserController::class, 'user']);
             Route::put('/', [UserController::class, 'update']);
             Route::post('avatar', [UserController::class, 'update_avatar']);
             Route::get('favorites', [UserController::class, 'favorites']);
             Route::put('change-password', [UserController::class, 'changePassword']);
-            Route::post('otp/send', 'sendOTP');
+            Route::post('otp/send', [UserController::class, 'sendOTP']);
         });
 
 
