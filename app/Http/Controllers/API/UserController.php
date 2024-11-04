@@ -180,7 +180,7 @@ class UserController extends BaseController
         }
 
         if (User::where('email', $request->email)->exists()) {
-            return $this->sendError('Validation Error.', ['error' => 'Email sudah terdaftar'], 409);
+            return $this->sendError('Email sudah terdaftar', null, 409);
         }
 
         $this->otpService->generateOTP($request->email);
