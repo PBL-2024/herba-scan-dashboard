@@ -26,11 +26,15 @@ Route::prefix('v1')->group(function () {
     // Authenticated
     Route::middleware(['auth:sanctum'])->group(function () {
         // User
-        Route::get('user', [UserController::class, 'user']);
-        Route::put('user', [UserController::class, 'update']);
-        Route::post('user/avatar', [UserController::class, 'update_avatar']);
-        Route::get('user/favorites', [UserController::class, 'favorites']);
-        Route::put('user/change-password', [UserController::class, 'changePassword']);
+        Route::group(['prefix'=> 'user'], function () {
+            Route::get('/', [UserController::class, 'user']);
+            Route::put('/', [UserController::class, 'update']);
+            Route::post('avatar', [UserController::class, 'update_avatar']);
+            Route::get('favorites', [UserController::class, 'favorites']);
+            Route::put('change-password', [UserController::class, 'changePassword']);
+            Route::post('otp/send', 'sendOTP');
+        });
+
 
         // Tanaman
         Route::group(['prefix' => 'plant'], function () {

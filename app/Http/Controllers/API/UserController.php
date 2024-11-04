@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Article;
 use App\Models\Plant;
 use App\Models\User;
+use App\Services\OTPService;
 use Hash;
 use Illuminate\Http\Request;
 use Storage;
@@ -12,6 +13,11 @@ use Validator;
 
 class UserController extends BaseController
 {
+    protected $otpService;
+    public function __construct(OTPService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
     /**
      * Get the authenticated user.
      * @param \Illuminate\Http\Request $request
@@ -156,5 +162,28 @@ class UserController extends BaseController
         $user->save();
 
         return $this->sendResponse([], 'Password berhasil diubah.');
+    }
+
+    /**
+     * sendOTP for change email.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function sendOTP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+
+        if (User::where('email', $request->email)->exists()) {
+            return $this->sendError('Validation Error.', ['error' => 'Email sudah terdaftar'], 409);
+        }
+
+        $this->otpService->generateOTP($request->email);
+        return $this->sendResponse([], 'OTP berhasil dikirim, cek email anda.');
     }
 }
