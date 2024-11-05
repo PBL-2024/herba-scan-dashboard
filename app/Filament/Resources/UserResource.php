@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -62,6 +63,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                // show image
+                ImageColumn::make('image_url')
+                    ->label('Profile')
+                    ->size('100'),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
