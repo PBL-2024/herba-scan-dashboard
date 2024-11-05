@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -28,6 +29,11 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                FileUpload::make('image_url')
+                    ->label('Profile')
+                    ->image()
+                    ->directory('unclassified_plants')
+                    ->required(),
                 TextInput::make('name')
                     ->label('Nama')
                     ->required()
