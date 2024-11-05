@@ -9,6 +9,7 @@ use App\Models\UnclassifiedPlant;
 use Cache;
 use Illuminate\Http\Request;
 use Storage;
+use Str;
 
 class TanamanController extends BaseController
 {
@@ -240,6 +241,22 @@ class TanamanController extends BaseController
             return $this->sendResponse(null, "Berhasil menghapus tanaman yang belum terklasifikasi.");
         } catch (\Throwable $th) {
             return $this->sendError('Error.', $th->getMessage(), $th->getCode());
+        }
+    }
+
+    public function getListNameUnclassifiedPlant()
+    {
+        $unclassifiedPlantNames = UnclassifiedPlant::distinct()->pluck('nama');
+
+        // Truncate similar names
+        $truncatedNames = $unclassifiedPlantNames->map(function ($name) {
+            return Str::limit($name, 20); // Truncate to 20 characters
+        })->unique();
+
+        if ($truncatedNames->count() > 0) {
+            return $this->sendResponse($truncatedNames, "Berhasil mengambil data tanaman yang belum terklasifikasi.");
+        } else {
+            return $this->sendResponse([], "Data tanaman yang belum terklasifikasi tidak ditemukan.");
         }
     }
 }

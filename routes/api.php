@@ -47,6 +47,7 @@ Route::prefix('v1')->group(function () {
         Route::get('unclassified-plants', [TanamanController::class, 'myUnclassifiedPlants']);
         Route::group(['prefix' => 'unclassified-plant'], function () {
             Route::post('/', [TanamanController::class, 'sendUnclassifiedPlant']);
+            Route::get('/list', [TanamanController::class, 'getListNameUnclassifiedPlant']);
             Route::delete('{id}', [TanamanController::class, 'deleteUnclassifiedPlant']);
         });
 
