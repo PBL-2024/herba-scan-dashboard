@@ -74,16 +74,30 @@ class AuthController extends BaseController
      */
     public function googleCallback(Request $request)
     {
-        $user = User::updateOrCreate(
-            ['google_id' => $request->id],
-            [
-                'name' => $request->displayName,
-                'email' => $request->email,
-                'password' => Str::random(12),
-                'email_verified_at' => now(),
-                'image_url' => $request->photoUrl,
-            ]
-        );
+        // Check if the user already exists
+        $existingUser = User::where('google_id', $request->id)
+            ->orWhere('email', $request->email)
+            ->first();
+
+        if ($existingUser) {
+            // If the user exists, log them in without updating their information
+            Auth::login($existingUser);
+
+            $user = Auth::user();
+            $success['token'] = $user->createToken('api-token')->plainTextToken;
+            $success['name'] = $user->name;
+            return $this->sendResponse($success, 'User login successfully.');
+        }
+
+        // If the user does not exist, create a new user
+        $user = User::create([
+            'google_id' => $request->id,
+            'name' => $request->displayName,
+            'email' => $request->email,
+            'password' => Str::random(12),
+            'email_verified_at' => now(),
+            'image_url' => $request->photoUrl,
+        ]);
 
         $this->assignUserRole($user, 'user');
 
