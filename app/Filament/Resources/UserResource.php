@@ -66,7 +66,8 @@ class UserResource extends Resource
                 // show image
                 ImageColumn::make('image_url')
                     ->label('Profile')
-                    ->size(100),
+                    ->size(100)
+                    ->rounded(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
