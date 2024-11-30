@@ -55,7 +55,7 @@ class AuthController extends BaseController
 
         $input = $request->all();
         if (User::where('email', $input['email'])->exists()) {
-            return $this->sendError('Validation Error.', ['error' => 'Email already exists']);
+            return $this->sendError('Validation Error.', ['error' => 'Email already exists'], 400);
         }
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
