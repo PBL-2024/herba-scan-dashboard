@@ -221,7 +221,7 @@ class TanamanController extends BaseController
             // Find the unclassified plant by ID
             $unclassifiedPlant = UnclassifiedPlant::find($id);
 
-            if($unclassifiedPlant == null){
+            if ($unclassifiedPlant == null) {
                 throw new \Exception("Data tanaman yang belum terklasifikasi tidak ditemukan.", 404);
             }
 
@@ -257,6 +257,22 @@ class TanamanController extends BaseController
             return $this->sendResponse($truncatedNames, "Berhasil mengambil data tanaman yang belum terklasifikasi.");
         } else {
             return $this->sendResponse([], "Data tanaman yang belum terklasifikasi tidak ditemukan.");
+        }
+    }
+
+    /**
+     * Get the plant by name.
+     * @param mixed $name
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function getByName($name)
+    {
+        $tanaman = Plant::where('nama', 'like', '%' . $name . '%')->first();
+
+        if ($tanaman != null) {
+            return $this->sendResponse($tanaman, "Berhasil mengambil data tanaman.");
+        } else {
+            return $this->sendError("Data tanaman tidak ditemukan.", [], 404);
         }
     }
 }

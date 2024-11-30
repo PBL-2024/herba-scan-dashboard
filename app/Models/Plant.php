@@ -40,6 +40,6 @@ class Plant extends Model
         if ($this->cover && !filter_var($this->cover, FILTER_VALIDATE_URL)) {
             return Storage::disk('public')->url($this->cover);
         }
-        return $value;
+        return $this->cover;
     }
 }
