@@ -143,6 +143,25 @@ class AuthController extends BaseController
         $this->otpService->generateOTP($request->email);
         return $this->sendResponse([], 'OTP berhasil dikirim, cek email anda.');
     }
+    
+    /**
+     * sendOTP for Signup
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse|mixed
+     */
+    public function sendOTPSignUp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+
+        $this->otpService->generateOTP($request->email);
+        return $this->sendResponse([], 'OTP berhasil dikirim, cek email anda.');
+    }
 
     /**
      * verifyOTP
