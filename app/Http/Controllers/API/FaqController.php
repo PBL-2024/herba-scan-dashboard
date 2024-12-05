@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class FaqController extends BaseController
 {
+    /**
+     * Get all faqs
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function index()
     {
         $faqs = Faq::all();

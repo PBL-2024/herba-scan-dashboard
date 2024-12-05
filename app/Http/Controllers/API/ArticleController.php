@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class ArticleController extends BaseController
 {
+    /**
+     * Get a list of articles.
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function index()
     {
         $article = Article::query();
@@ -123,6 +127,11 @@ class ArticleController extends BaseController
         }
     }
 
+    /**
+     * Get an article by ID.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function show($id)
     {
         $article = Article::find($id);

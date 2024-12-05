@@ -213,6 +213,12 @@ class TanamanController extends BaseController
         return $this->sendResponse($unclassifiedPlant, "Berhasil mengirim tanaman yang belum terklasifikasi.");
     }
 
+    /**
+     * Delete an unclassified plant.
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function deleteUnclassifiedPlant(Request $request, $id)
     {
         try {
@@ -244,6 +250,10 @@ class TanamanController extends BaseController
         }
     }
 
+    /**
+     * Get the list of unclassified plant names.
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function getListNameUnclassifiedPlant()
     {
         $unclassifiedPlantNames = UnclassifiedPlant::distinct()->pluck('nama');

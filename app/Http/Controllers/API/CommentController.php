@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CommentController extends BaseController
 {
+    /**
+     * Add a comment to an article.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function comment(Request $request)
     {
         try {
@@ -32,6 +37,11 @@ class CommentController extends BaseController
         return $this->sendResponse($comment, "Kommentar berhasil ditambahkan.");
     }
 
+    /**
+     * Get comments from an article.
+     * @param int $article_id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function getComments($article_id)
     {
         $comments = Comment::with('user')->where('article_id', $article_id)->get();
@@ -41,6 +51,12 @@ class CommentController extends BaseController
         return $this->sendResponse($comments, "Berhasil mengambil data komentar.");
     }
 
+    /**
+     * Delete a comment from an article.
+     * @param \Illuminate\Http\Request $request
+     * @param int $article_id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function deleteComment(Request $request, $article_id)
     {
         try {

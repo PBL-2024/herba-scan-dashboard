@@ -18,7 +18,7 @@ class AuthController extends BaseController
         $this->otpService = $otpService;
     }
     /**
-     * Login api
+     * User Login
      * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
@@ -36,7 +36,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Register api
+     * User Register
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -68,7 +68,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Summary of googleCallback
+     * Google callback for login and register
      * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
@@ -110,7 +110,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * logout api
+     * Logout user (Revoke the token)
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -122,7 +122,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * sendOTP
+     * Send OTP to user email
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse|mixed
      */
@@ -145,7 +145,7 @@ class AuthController extends BaseController
     }
     
     /**
-     * sendOTP for Signup
+     * Send OTP to user email for SignUp
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse|mixed
      */
@@ -164,7 +164,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * verifyOTP
+     * Verify OTP
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse|mixed
      */
@@ -188,6 +188,11 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * Change user password
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse|\Illuminate\Http\Response
+     */
     public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
