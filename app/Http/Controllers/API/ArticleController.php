@@ -153,6 +153,11 @@ class ArticleController extends BaseController
         }
     }
 
+    /**
+     * Search for articles by keyword.
+     * @param mixed $keyword
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function search($keyword)
     {
         $articles = Article::where('judul', 'like', '%' . $keyword . '%')

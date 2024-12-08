@@ -285,4 +285,23 @@ class TanamanController extends BaseController
             return $this->sendError("Data tanaman tidak ditemukan.", [], 404);
         }
     }
+
+    /**
+     * Search for plants by keyword.
+     * @param mixed $keyword
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function search($keyword)
+    {
+        $tanaman = Plant::where('nama', 'like', '%' . $keyword . '%')
+            ->orWhere('deskripsi', 'like', '%' . $keyword . '%')
+            ->orWhere('manfaat', 'like', '%' . $keyword . '%')
+            ->orWhere('pengolahan', 'like', '%' . $keyword . '%')->get();
+
+        if ($tanaman->count() > 0) {
+            return $this->sendResponse($tanaman, "Berhasil mengambil data tanaman.");
+        } else {
+            return $this->sendResponse([], "Data tanaman tidak ditemukan.");
+        }
+    }
 }
