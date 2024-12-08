@@ -155,8 +155,8 @@ class ArticleController extends BaseController
 
     public function search($keyword)
     {
-        $articles = Article::where('title', 'like', '%' . $keyword . '%')
-            ->orWhere('content', 'like', '%' . $keyword . '%')
+        $articles = Article::where('judul', 'like', '%' . $keyword . '%')
+            ->orWhere('isi', 'like', '%' . $keyword . '%')
             ->get();
 
         if ($articles->count() > 0) {
