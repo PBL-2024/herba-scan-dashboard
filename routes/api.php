@@ -33,6 +33,7 @@ Route::prefix('v1')->group(function () {
     // Article
     Route::group(['prefix' => 'article'], function () {
         Route::get('{id}', [ArticleController::class, 'show']);
+        Route::get('/search/{keyword}', [ArticleController::class, 'search']);
     });
 
     // Authenticated

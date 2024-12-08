@@ -152,4 +152,17 @@ class ArticleController extends BaseController
             return $this->sendError("Data artikel tidak ditemukan.", 404);
         }
     }
+
+    public function search($keyword)
+    {
+        $articles = Article::where('title', 'like', '%' . $keyword . '%')
+            ->orWhere('content', 'like', '%' . $keyword . '%')
+            ->get();
+
+        if ($articles->count() > 0) {
+            return $this->sendResponse($articles, "Berhasil mengambil data artikel.");
+        } else {
+            return $this->sendResponse([], "Data artikel tidak ditemukan.");
+        }
+    }
 }
