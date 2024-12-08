@@ -24,6 +24,17 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+    // Tanaman
+    Route::group(['prefix' => 'plant'], function () {
+        Route::get('{id}', [TanamanController::class, 'show']);
+        Route::get('/name/{name}', [TanamanController::class, 'getByName']);
+    });
+
+    // Article
+    Route::group(['prefix' => 'article'], function () {
+        Route::get('{id}', [ArticleController::class, 'show']);
+    });
+
     // Authenticated
     Route::middleware(['auth:sanctum'])->group(function () {
         // User
@@ -41,8 +52,6 @@ Route::prefix('v1')->group(function () {
         Route::group(['prefix' => 'plant'], function () {
             Route::post('favorite', [TanamanController::class, 'setFavorite']);
             Route::post('is-favorite', [TanamanController::class, 'isFavorite']);
-            Route::get('{id}', [TanamanController::class, 'show']);
-            Route::get('/name/{name}', [TanamanController::class, 'getByName']);
         });
 
         // Tanaman belum terdaftar
