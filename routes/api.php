@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('v1')->group(function () {
+    // Article
+    Route::group(['prefix' => 'article'], function () {
+        Route::get('{id}', [ArticleController::class, 'show']);
+        Route::get('/search/{keyword}', [ArticleController::class, 'search']);
+    })->withoutMiddleware(['auth:sanctum']);
+
     Route::prefix('auth')->group(function () {
         Route::controller(AuthController::class)->group(function () {
             Route::post('logout', 'logout')->middleware('auth:sanctum');
@@ -32,11 +38,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/search/{keyword}', [TanamanController::class, 'search']);
     });
 
-    // Article
-    Route::group(['prefix' => 'article'], function () {
-        Route::get('{id}', [ArticleController::class, 'show'])->withoutMiddleware('auth:sanctum');
-        Route::get('/search/{keyword}', [ArticleController::class, 'search']);
-    });
+
 
     // Authenticated
     Route::middleware(['auth:sanctum'])->group(function () {
