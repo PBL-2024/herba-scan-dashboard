@@ -71,6 +71,10 @@ class PlantResource extends Resource
                 ImageColumn::make('cover')
                     ->label('Cover')
                     ->size(100),
+                TextColumn::make('total_view') // Tampilkan nama tanaman di tabel
+                    ->label('Total View')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('user.name') // Tampilkan nama tanaman di tabel
                     ->label('Dibuat Oleh')
                     ->sortable()
