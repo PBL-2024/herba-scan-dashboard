@@ -17,6 +17,7 @@ Route::prefix('v1')->group(function () {
             Route::post('login', 'login');
             Route::post('register', 'register');
             Route::post('google/callback', 'googleCallback');
+            Route::post('otp/send-authenticated-user', 'sendOTPAuthenticatedUser')->middleware('auth:sanctum');
             Route::post('otp/send', 'sendOTP');
             Route::post('otp/signup/send', 'sendOTPSignUp');
             Route::post('otp/verify', 'verifyOTP');

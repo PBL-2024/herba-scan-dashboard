@@ -136,8 +136,32 @@ class AuthController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors(), 409);
         }
 
-        if (!User::where('email', $request->email)->exists()) {
+        if (!Auth::where('email', $request->email)->exists()) {
             return $this->sendError('Validation Error.', ['error' => 'Email tidak terdaftar'], 409);
+        }
+
+        $this->otpService->generateOTP($request->email);
+        return $this->sendResponse([], 'OTP berhasil dikirim, cek email anda.');
+    }
+
+    /**
+     * Send OTP to authenticated user email to change password
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse|\Illuminate\Http\Response
+     */
+    public function sendOTPAuthenticatedUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 409);
+        }
+        
+        // check email is match with authenticated user
+        if ($request->user()->email != $request->email) {
+            return $this->sendError('Validation Error.', ['error' => 'Email tidak sesuai dengan user yang sedang login'], 409);
         }
 
         $this->otpService->generateOTP($request->email);
