@@ -136,17 +136,17 @@ class ArticleController extends BaseController
     {
         $article = Article::find($id);
         if ($article) {
-            $userId = auth()->id(); // Get the authenticated user's ID
-            $cacheKey = "article_view_{$id}_user_{$userId}";
+            // $userId = auth()->id(); // Get the authenticated user's ID
+            // $cacheKey = "article_view_{$id}_user_{$userId}";
 
-            // Check if the user has viewed this article in the last 5 minutes
-            if (!Cache::has($cacheKey)) {
-                // Increment the total_view count
-                $article->increment('total_view');
+            // // Check if the user has viewed this article in the last 5 minutes
+            // if (!Cache::has($cacheKey)) {
+            //     // Increment the total_view count
+            //     $article->increment('total_view');
 
-                // Store a cache entry to prevent multiple views within 5 minutes
-                Cache::put($cacheKey, true, now()->addMinutes(5));
-            }
+            //     // Store a cache entry to prevent multiple views within 5 minutes
+            //     Cache::put($cacheKey, true, now()->addMinutes(5));
+            // }
             return $this->sendResponse($article, "Berhasil mengambil data artikel.");
         } else {
             return $this->sendError("Data artikel tidak ditemukan.", 404);
