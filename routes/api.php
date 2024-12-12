@@ -15,7 +15,7 @@ Route::prefix('v1')->group(function () {
     Route::group(['prefix' => 'article'], function () {
         Route::get('{id}', [ArticleController::class, 'show']);
         Route::get('/search/{keyword}', [ArticleController::class, 'search']);
-    })->withoutMiddleware(['auth:sanctum']);
+    });
 
     Route::prefix('auth')->group(function () {
         Route::controller(AuthController::class)->group(function () {
@@ -71,7 +71,6 @@ Route::prefix('v1')->group(function () {
         Route::group(['prefix' => 'article'], function () {
             Route::post('favorite', [ArticleController::class, 'setFavorite']);
             Route::post('is-favorite', [ArticleController::class, 'isFavorite']);
-            Route::get('{id}', [ArticleController::class, 'show']);
 
             // Comment
             Route::group(['prefix' => 'comment'], function () {
