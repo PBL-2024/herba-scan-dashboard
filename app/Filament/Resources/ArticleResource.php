@@ -36,6 +36,7 @@ class ArticleResource extends Resource
                 DatePicker::make('tanggal_publikasi')
                     ->label('Tanggal Publikasi')
                     ->required(),
+                TinyEditor::make('short_desc')->label('Deskripsi Singkat')->required(),
                 FileUpload::make('cover')
                     ->label('Cover')
                     ->required()

@@ -11,6 +11,7 @@ class Article extends Model
         'user_id',
         'judul',
         'isi',
+        'short_desc',
         'cover',
         'total_view',
         'tanggal_publikasi',
