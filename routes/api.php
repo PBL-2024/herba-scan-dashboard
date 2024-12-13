@@ -76,7 +76,7 @@ Route::prefix('v1')->group(function () {
             Route::group(['prefix' => 'comment'], function () {
                 Route::post('/', [CommentController::class, 'comment']);
                 Route::get('{article_id}', [CommentController::class, 'getComments']);
-                Route::delete('{article_id}', [CommentController::class, 'deleteComment']);
+                Route::delete('{article_id}/{comment_id}', [CommentController::class, 'deleteComment']);
             });
         });
     });

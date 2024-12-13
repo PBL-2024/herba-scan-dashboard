@@ -57,12 +57,12 @@ class CommentController extends BaseController
      * @param int $article_id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function deleteComment(Request $request, $article_id)
+    public function deleteComment(Request $request, $article_id, $comment_id)
     {
         try {
             $comment = Comment::where("article_id", $article_id)
                 ->where("user_id", $request->user()->id)
-                ->where('id', $request->comment_id)->firstOrFail();
+                ->where('id', $comment_id)->firstOrFail();
             if ($comment) {
                 $comment->delete();
                 return $this->sendResponse(null, "Komentar berhasil dihapus.");
