@@ -136,7 +136,7 @@ class AuthController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors(), 409);
         }
 
-        if (!Auth::where('email', $request->email)->exists()) {
+        if (!User::where('email', $request->email)->exists()) {
             return $this->sendError('Validation Error.', ['error' => 'Email tidak terdaftar'], 409);
         }
 
