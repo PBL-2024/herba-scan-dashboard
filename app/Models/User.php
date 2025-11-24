@@ -8,8 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\FilamentUser;
 use Storage;
-class User extends Authenticatable
+
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, HasRoles;
@@ -37,7 +39,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    public function canAccessFilament(): bool
+    {
+        return $this->hasRole('super_admin');
+    }
     /**
      * Get the attributes that should be cast.
      *
