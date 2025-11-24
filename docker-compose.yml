@@ -7,8 +7,10 @@ services:
         container_name: herba-scan-dashboard-app
         restart: unless-stopped
         working_dir: /var/www
+        env_file:
+            - .env
         volumes:
-            - ./:/var/www
+            - appdata:/var/www/storage
         networks:
             - proxy
         ports:
@@ -23,7 +25,6 @@ services:
         ports:
             - "8001:80"
         volumes:
-            - ./:/var/www
             - ./nginx/conf.d:/etc/nginx/conf.d
         networks:
             - proxy
@@ -39,6 +40,7 @@ services:
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_USER: ${DB_USERNAME}
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
         volumes:
@@ -52,4 +54,6 @@ networks:
 
 volumes:
     dbdata:
+        driver: local
+    appdata:
         driver: local
