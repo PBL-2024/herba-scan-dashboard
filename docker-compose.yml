@@ -10,7 +10,7 @@ services:
         volumes:
             - ./:/var/www
         networks:
-            - herba-scan-network
+            - proxy
         ports:
             - "9000:9000"
         depends_on:
@@ -30,11 +30,11 @@ services:
         volumes:
             - dbdata:/var/lib/mysql
         networks:
-            - herba-scan-network
+            - proxy
 
 networks:
-    herba-scan-network:
-        driver: bridge
+    proxy:
+        external: true
 
 volumes:
     dbdata:
