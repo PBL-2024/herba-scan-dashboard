@@ -51,15 +51,11 @@ RUN composer install --no-dev --prefer-dist --no-progress --no-scripts
 # Copy source code
 COPY . .
 
-# Debug: List files to verify copy
-RUN ls -la /var/www/html
-
 # Build frontend assets
 # RUN npm run prod
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html \
- && chmod -R 775 storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
 
 # =========================
 # Stage 2: Production
