@@ -16,6 +16,20 @@ services:
         depends_on:
             - db
 
+    nginx:
+        image: nginx:alpine
+        container_name: herba-scan-dashboard-nginx
+        restart: unless-stopped
+        ports:
+            - "8001:80"
+        volumes:
+            - ./:/var/www
+            - ./nginx/conf.d:/etc/nginx/conf.d
+        networks:
+            - proxy
+        depends_on:
+            - app
+
     db:
         image: mysql:8.0
         container_name: herba-scan-dashboard-db
