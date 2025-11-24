@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use Storage;
+use Filament\Panel;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -39,7 +40,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'remember_token',
     ];
-    public function canAccessPanel(): bool
+    public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasRole('super_admin');
     }
