@@ -16,13 +16,18 @@ class TrustProxies
      */
     public function handle(Request $request, Closure $next)
     {
+        $headers = Request::HEADER_X_FORWARDED_FOR |
+                   Request::HEADER_X_FORWARDED_HOST |
+                   Request::HEADER_X_FORWARDED_PORT |
+                   Request::HEADER_X_FORWARDED_PROTO;
+
         // Set trusted proxies based on environment
         if (config('app.env') === 'production' && env('TRUSTED_PROXIES')) {
             if (env('TRUSTED_PROXIES') === '*') {
-                $request->setTrustedProxies(['*'], Request::HEADER_X_FORWARDED_ALL);
+                $request->setTrustedProxies(['*'], $headers);
             } else {
                 $trustedProxies = explode(',', env('TRUSTED_PROXIES'));
-                $request->setTrustedProxies($trustedProxies, Request::HEADER_X_FORWARDED_ALL);
+                $request->setTrustedProxies($trustedProxies, $headers);
             }
         }
 

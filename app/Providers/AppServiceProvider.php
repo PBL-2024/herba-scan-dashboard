@@ -34,13 +34,18 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureTrustedProxies(): void
     {
+        $headers = Request::HEADER_X_FORWARDED_FOR |
+                   Request::HEADER_X_FORWARDED_HOST |
+                   Request::HEADER_X_FORWARDED_PORT |
+                   Request::HEADER_X_FORWARDED_PROTO;
+
         // Trust all proxies if TRUSTED_PROXIES is set to *
         if (env('TRUSTED_PROXIES') === '*') {
-            Request::setTrustedProxies(['*'], Request::HEADER_X_FORWARDED_ALL);
+            Request::setTrustedProxies(['*'], $headers);
         } elseif (env('TRUSTED_PROXIES')) {
             // Trust specific proxy IPs
             $trustedProxies = explode(',', env('TRUSTED_PROXIES'));
-            Request::setTrustedProxies($trustedProxies, Request::HEADER_X_FORWARDED_ALL);
+            Request::setTrustedProxies($trustedProxies, $headers);
         }
 
         // Trust hosts if configured
