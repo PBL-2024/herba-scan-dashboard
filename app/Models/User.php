@@ -39,7 +39,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'remember_token',
     ];
-    public function canAccessFilament(): bool
+    public function canAccessPanel(): bool
     {
         return $this->hasRole('super_admin');
     }
