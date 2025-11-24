@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "org.kelompok6.herba_scan",
+               "sha256_cert_fingerprints": ["CA:93:3A:38:89:5C:DD:AD:10:33:A5:B7:A8:92:CF:49:FB:ED:A4:FD:B7:8C:63:61:AA:89:CD:CD:39:ED:84:A6"] }
+}]
