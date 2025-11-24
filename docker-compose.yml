@@ -5,8 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: herba-scan-app
-    ports:
-      - "8000:80"
     volumes:
       - ./storage:/var/www/html/storage
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
@@ -22,7 +20,7 @@ services:
     depends_on:
       - db
     networks:
-      - herba-network
+      - proxy
 
   # MySQL Database
   db:
@@ -33,12 +31,10 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_PASSWORD: root
       MYSQL_USER: user
-    ports:
-      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - herba-network
+      - proxy
 
   # PHPMyAdmin
   phpmyadmin:
@@ -49,16 +45,14 @@ services:
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: root
-    ports:
-      - "8080:80"
     depends_on:
       - db
     networks:
-      - herba-network
+      - proxy
 
 volumes:
   mysql_data:
 
 networks:
-  herba-network:
-    driver: bridge
+  proxy:
+    external: true
